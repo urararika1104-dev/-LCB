@@ -1,0 +1,1205 @@
+/* ==================================================
+   リンバスカンパニー囚人診断
+   ================================================== */
+
+@import url(
+    'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap'
+);
+
+
+/* ==================================================
+   基本カラー
+================================================== */
+
+:root {
+
+    --bg: #08090d;
+
+    --bg2: #10121a;
+
+    --panel:
+        rgba(20, 22, 30, 0.92);
+
+    --text:
+        #f2f2f5;
+
+    --muted:
+        #9297a5;
+
+    --border:
+        rgba(255,255,255,0.12);
+
+}
+
+
+/* ==================================================
+   基本
+================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+
+html {
+    min-height: 100%;
+}
+
+
+body {
+
+    margin: 0;
+
+    min-height: 100vh;
+
+    color:
+        var(--text);
+
+    font-family:
+        "Noto Sans JP",
+        "Yu Gothic",
+        sans-serif;
+
+    background:
+        radial-gradient(
+            circle at 50% -15%,
+            #252936 0%,
+            #11131b 35%,
+            #08090d 75%
+        );
+
+    overflow-x: hidden;
+
+}
+
+
+/* ==================================================
+   背景
+================================================== */
+
+body::before {
+
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    background:
+
+        radial-gradient(
+            circle at 15% 50%,
+            rgba(150,40,45,0.08),
+            transparent 28%
+        ),
+
+        radial-gradient(
+            circle at 85% 50%,
+            rgba(90,100,110,0.08),
+            transparent 28%
+        );
+
+    z-index: -1;
+
+}
+
+
+/* ==================================================
+   全体
+================================================== */
+
+#app {
+
+    width: 100%;
+
+    min-height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding:
+        35px 20px;
+
+}
+
+
+.screen {
+
+    width:
+        min(1000px, 100%);
+
+}
+
+
+/* ==================================================
+   タイトル画面
+================================================== */
+
+.title-screen {
+
+    text-align: center;
+
+}
+
+
+.logo-small {
+
+    color:
+        var(--muted);
+
+    font-size:
+        12px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        0.35em;
+
+    margin-bottom:
+        20px;
+
+}
+
+
+.title {
+
+    margin: 0;
+
+    font-size:
+        clamp(48px, 9vw, 90px);
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        0.08em;
+
+    background:
+
+        linear-gradient(
+            90deg,
+
+            #777777,
+            #e8b6c8,
+            #e6c43c,
+            #d43b35,
+            #587b86,
+            #73cfe5,
+            #71607e,
+            #e98a3a,
+            #8b9b5b,
+            #657457,
+            #7b5b46,
+            #8f4646,
+            #6f2028
+        );
+
+    -webkit-background-clip:
+        text;
+
+    background-clip:
+        text;
+
+    color:
+        transparent;
+
+    filter:
+        drop-shadow(
+            0 0 25px
+            rgba(255,255,255,0.08)
+        );
+
+}
+
+
+.subtitle {
+
+    margin-top:
+        18px;
+
+    color:
+        #aeb2bd;
+
+    font-size:
+        16px;
+
+    letter-spacing:
+        0.15em;
+
+}
+
+
+/* ==================================================
+   囚人カラーライン
+================================================== */
+
+.prisoner-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    grid-template-rows:
+        repeat(5, 5px);
+
+    width:
+        min(600px, 90%);
+
+    margin:
+        45px auto;
+
+    gap:
+        2px;
+
+}
+
+
+.prisoner-grid span {
+
+    display:
+        block;
+
+    border-radius:
+        999px;
+
+}
+
+
+.prisoner-grid .empty {
+
+    background:
+        transparent;
+
+}
+
+
+/* ==================================================
+   共通ボタン
+================================================== */
+
+button {
+
+    font-family:
+        inherit;
+
+}
+
+
+/* ==================================================
+   開始・結果ボタン
+================================================== */
+
+.start-button,
+.retry-button {
+
+    border:
+        1px solid
+        rgba(255,255,255,0.22);
+
+    background:
+
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,0.08),
+            rgba(255,255,255,0.02)
+        );
+
+    color:
+        white;
+
+    padding:
+        17px 48px;
+
+    font-size:
+        15px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        0.12em;
+
+    border-radius:
+        8px;
+
+    cursor:
+        pointer;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+
+}
+
+
+.start-button:hover,
+.retry-button:hover {
+
+    transform:
+        translateY(-3px);
+
+    border-color:
+        #8f4646;
+
+    background:
+        rgba(143,70,70,0.12);
+
+    box-shadow:
+        0 10px 35px
+        rgba(143,70,70,0.15);
+
+}
+
+
+.start-button:active,
+.retry-button:active {
+
+    transform:
+        translateY(0);
+
+}
+
+
+/* ==================================================
+   質問画面
+================================================== */
+
+.question-header {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        center;
+
+    color:
+        var(--muted);
+
+    font-size:
+        12px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        0.18em;
+
+    margin-bottom:
+        12px;
+
+}
+
+
+/* ==================================================
+   プログレスバー
+================================================== */
+
+.progress-container {
+
+    height:
+        4px;
+
+    background:
+        rgba(255,255,255,0.08);
+
+    border-radius:
+        999px;
+
+    overflow:
+        hidden;
+
+    margin-bottom:
+        30px;
+
+}
+
+
+.progress-bar {
+
+    height:
+        100%;
+
+    background:
+
+        linear-gradient(
+            90deg,
+
+            #777777,
+            #e8b6c8,
+            #e6c43c,
+            #d43b35,
+            #587b86,
+            #73cfe5,
+            #71607e,
+            #e98a3a,
+            #8b9b5b,
+            #657457,
+            #7b5b46,
+            #8f4646,
+            #6f2028
+        );
+
+    border-radius:
+        999px;
+
+    transition:
+        width 0.4s ease;
+
+}
+
+
+/* ==================================================
+   質問カード
+================================================== */
+
+.question-card {
+
+    position:
+        relative;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,0.065),
+            rgba(255,255,255,0.025)
+        );
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:
+        20px;
+
+    padding:
+        clamp(30px, 6vw, 65px);
+
+    box-shadow:
+        0 30px 90px
+        rgba(0,0,0,0.4);
+
+    backdrop-filter:
+        blur(10px);
+
+    overflow:
+        hidden;
+
+}
+
+
+/* ==================================================
+   質問カード上部
+================================================== */
+
+.question-card::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    top:
+        0;
+
+    left:
+        0;
+
+    right:
+        0;
+
+    height:
+        3px;
+
+    background:
+
+        linear-gradient(
+            90deg,
+
+            #777777,
+            #e8b6c8,
+            #e6c43c,
+            #d43b35,
+            #587b86,
+            #73cfe5,
+            #71607e,
+            #e98a3a,
+            #8b9b5b,
+            #657457,
+            #7b5b46,
+            #8f4646,
+            #6f2028
+        );
+
+}
+
+
+.question-number {
+
+    color:
+        #777d89;
+
+    font-size:
+        11px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        0.25em;
+
+    margin-bottom:
+        22px;
+
+}
+
+
+.question-text {
+
+    margin:
+        0 0 45px;
+
+    font-size:
+        clamp(21px, 4vw, 31px);
+
+    line-height:
+        1.8;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        0.02em;
+
+}
+
+
+/* ==================================================
+   回答
+================================================== */
+
+.answers {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(5, 1fr);
+
+    gap:
+        10px;
+
+}
+
+
+.answer-button {
+
+    position:
+        relative;
+
+    min-height:
+        115px;
+
+    border:
+        1px solid
+        rgba(255,255,255,0.12);
+
+    border-radius:
+        12px;
+
+    background:
+        rgba(10,12,17,0.75);
+
+    color:
+        #d0d3da;
+
+    padding:
+        15px 8px;
+
+    cursor:
+        pointer;
+
+    transition:
+        transform 0.18s ease,
+        background 0.18s ease,
+        border-color 0.18s ease,
+        color 0.18s ease,
+        box-shadow 0.18s ease;
+
+}
+
+
+.answer-button:hover {
+
+    transform:
+        translateY(-5px);
+
+    color:
+        white;
+
+    background:
+        rgba(143,70,70,0.12);
+
+    border-color:
+        #8f4646;
+
+    box-shadow:
+        0 12px 30px
+        rgba(143,70,70,0.12);
+
+}
+
+
+.answer-number {
+
+    display:
+        block;
+
+    font-size:
+        24px;
+
+    font-weight:
+        900;
+
+    margin-bottom:
+        10px;
+
+    color:
+        #ffffff;
+
+}
+
+
+.answer-label {
+
+    display:
+        block;
+
+    font-size:
+        12px;
+
+    line-height:
+        1.5;
+
+}
+
+
+/* ==================================================
+   戻るボタン
+================================================== */
+
+.back-button {
+
+    display:
+        block;
+
+    width:
+        fit-content;
+
+    min-width:
+        190px;
+
+    margin:
+        28px auto 0;
+
+    padding:
+        11px 24px;
+
+    background:
+        rgba(255,255,255,0.035);
+
+    border:
+        1px solid
+        rgba(255,255,255,0.25);
+
+    border-radius:
+        8px;
+
+    color:
+        #b8bbc4;
+
+    font-family:
+        inherit;
+
+    font-size:
+        13px;
+
+    font-weight:
+        500;
+
+    letter-spacing:
+        0.08em;
+
+    cursor:
+        pointer;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
+
+}
+
+
+.back-button:hover {
+
+    transform:
+        translateY(-2px);
+
+    background:
+        rgba(143,70,70,0.10);
+
+    border-color:
+        #8f4646;
+
+    color:
+        #ffffff;
+
+    box-shadow:
+        0 8px 25px
+        rgba(143,70,70,0.12);
+
+}
+
+
+.back-button:active {
+
+    transform:
+        translateY(0);
+
+}
+
+
+/* ==================================================
+   結果画面
+================================================== */
+
+.result-screen {
+
+    text-align:
+        center;
+
+}
+
+
+.result-label {
+
+    color:
+        var(--muted);
+
+    font-size:
+        12px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        0.35em;
+
+    margin-bottom:
+        15px;
+
+}
+
+
+.result-finger {
+
+    margin:
+        0;
+
+    font-size:
+        clamp(55px, 11vw, 100px);
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        0.08em;
+
+    text-shadow:
+        0 0 35px currentColor;
+
+}
+
+
+.result-subtitle {
+
+    color:
+        #9ca1ad;
+
+    margin-top:
+        8px;
+
+    margin-bottom:
+        35px;
+
+    font-size:
+        13px;
+
+    letter-spacing:
+        0.3em;
+
+}
+
+
+/* ==================================================
+   結果ランキング
+================================================== */
+
+.ranking {
+
+    text-align:
+        left;
+
+    background:
+        rgba(17,19,26,0.85);
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:
+        16px;
+
+    padding:
+        28px;
+
+    box-shadow:
+        0 20px 60px
+        rgba(0,0,0,0.3);
+
+}
+
+
+.ranking-title {
+
+    color:
+        #777d88;
+
+    font-size:
+        11px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        0.2em;
+
+    margin-bottom:
+        28px;
+
+}
+
+
+/* ==================================================
+   3 × 4 + 2 レイアウト
+================================================== */
+
+.result-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap:
+        14px;
+
+}
+
+
+.rank-row {
+
+    margin:
+        0;
+
+    padding:
+        14px;
+
+    border:
+        1px solid
+        rgba(255,255,255,0.07);
+
+    border-radius:
+        10px;
+
+    background:
+        rgba(255,255,255,0.025);
+
+}
+
+
+.rank-info {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        center;
+
+    gap:
+        8px;
+
+    margin-bottom:
+        8px;
+
+}
+
+
+.rank-name {
+
+    font-weight:
+        700;
+
+}
+
+
+.rank-number {
+
+    color:
+        #777d88;
+
+    margin-right:
+        4px;
+
+}
+
+
+.rank-score {
+
+    color:
+        #9297a3;
+
+    font-size:
+        12px;
+
+    white-space:
+        nowrap;
+
+}
+
+
+.score-background {
+
+    height:
+        7px;
+
+    background:
+        rgba(255,255,255,0.08);
+
+    border-radius:
+        999px;
+
+    overflow:
+        hidden;
+
+}
+
+
+.score-bar {
+
+    height:
+        100%;
+
+    border-radius:
+        999px;
+
+    transition:
+        width 0.8s ease;
+
+}
+
+
+/* ==================================================
+   ダンテを中央に配置
+================================================== */
+
+.result-grid .rank-row:nth-child(14) {
+
+    grid-column:
+        2;
+
+}
+
+
+/* ==================================================
+   結果ボタン
+================================================== */
+
+.retry-button {
+
+    margin-top:
+        28px;
+
+}
+
+
+/* ==================================================
+   スマホ対応
+================================================== */
+
+@media (max-width: 700px) {
+
+    #app {
+
+        padding:
+            20px 12px;
+
+    }
+
+
+    .question-card {
+
+        padding:
+            30px 20px;
+
+        border-radius:
+            15px;
+
+    }
+
+
+    .answers {
+
+        grid-template-columns:
+            1fr;
+
+        gap:
+            8px;
+
+    }
+
+
+    .answer-button {
+
+        min-height:
+            65px;
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        gap:
+            15px;
+
+        text-align:
+            left;
+
+        padding:
+            12px 18px;
+
+    }
+
+
+    .answer-number {
+
+        width:
+            28px;
+
+        margin:
+            0;
+
+        flex-shrink:
+            0;
+
+    }
+
+
+    .answer-label {
+
+        font-size:
+            13px;
+
+    }
+
+
+    .question-text {
+
+        font-size:
+            20px;
+
+    }
+
+
+    .ranking {
+
+        padding:
+            14px;
+
+    }
+
+
+    .result-grid {
+
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+
+        gap:
+            8px;
+
+    }
+
+
+    .rank-row {
+
+        padding:
+            10px;
+
+    }
+
+
+    .rank-info {
+
+        display:
+            block;
+
+    }
+
+
+    .rank-score {
+
+        display:
+            block;
+
+        margin-top:
+            3px;
+
+    }
+
+
+    .back-button {
+
+        width:
+            100%;
+
+        min-width:
+            0;
+
+        padding:
+            13px 20px;
+
+    }
+
+}

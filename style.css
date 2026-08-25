@@ -180,40 +180,12 @@ body::before {
     letter-spacing:
         0.08em;
 
-    background:
-
-        linear-gradient(
-            90deg,
-
-            #777777,
-            #e8b6c8,
-            #e6c43c,
-            #d43b35,
-            #587b86,
-            #73cfe5,
-            #71607e,
-            #e98a3a,
-            #8b9b5b,
-            #657457,
-            #7b5b46,
-            #8f4646,
-            #6f2028
-        );
-
-    -webkit-background-clip:
-        text;
-
-    background-clip:
-        text;
-
     color:
-        transparent;
+        #6f2028;
 
-    filter:
-        drop-shadow(
-            0 0 25px
-            rgba(255,255,255,0.08)
-        );
+    text-shadow:
+        0 0 25px
+        rgba(111,32,40,0.25);
 
 }
 
